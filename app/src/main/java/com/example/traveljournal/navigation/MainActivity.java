@@ -7,6 +7,7 @@ import android.view.Menu;
 
 import com.example.traveljournal.R;
 import com.example.traveljournal.TripFormActivity;
+import com.example.traveljournal.domain.Trip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -56,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("isReadOnly", false);
+                bundle.putSerializable("trip", new Trip());
                 Intent addTripIntent = new Intent(MainActivity.this, TripFormActivity.class);
                 startActivity(addTripIntent);
             }

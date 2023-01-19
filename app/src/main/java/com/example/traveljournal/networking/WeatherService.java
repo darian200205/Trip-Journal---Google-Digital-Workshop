@@ -49,7 +49,7 @@ public class WeatherService {
                     public void onResponse(Call<List<Coordinates>> call, Response<List<Coordinates>> response) {
                         if(response.isSuccessful()) {
                             List<Coordinates> coordinates = response.body();
-                            if(coordinates != null) {
+                            if(coordinates != null && !coordinates.isEmpty()) {
                                 callback.onSuccess(coordinates.get(0));
                             } else {
                                 callback.onError();

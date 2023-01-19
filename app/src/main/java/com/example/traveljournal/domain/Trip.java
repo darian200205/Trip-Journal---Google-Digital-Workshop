@@ -1,19 +1,50 @@
 package com.example.traveljournal.domain;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Date;
 
+@Entity(tableName = "trip")
 public class Trip implements Serializable {
 
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    private Integer id;
+
+    @NotNull
+    @ColumnInfo(name = "name")
     private String name;
+
+    @ColumnInfo(name = "destination")
     private String destination;
+
+    @ColumnInfo(name = "rating")
     private Integer rating;
+
+    @ColumnInfo(name = "imageUrl")
     private String imageUrl;
+
+    @ColumnInfo(name = "tripType")
+    @TypeConverters({TripTypeConverter.class})
     private TripType tripType;
+
+    @ColumnInfo(name = "price")
     private Integer price;
+
+    @ColumnInfo(name = "startDate")
+    @TypeConverters({DateConverter.class})
+    @NonNull
     private Date startDate;
+
+    @ColumnInfo(name = "endDate")
+    @TypeConverters({DateConverter.class})
     private Date endDate;
 
     public Trip(String name, String destination, Integer rating, String imageUrl, TripType tripType, Integer price, Date startDate, Date endDate) {
@@ -25,6 +56,19 @@ public class Trip implements Serializable {
         this.price = price;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public Trip() {
+
+    }
+
+    @NonNull
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(@NonNull Integer id) {
+        this.id = id;
     }
 
     public TripType getTripType() {

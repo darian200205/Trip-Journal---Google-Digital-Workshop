@@ -1,6 +1,7 @@
 package com.example.traveljournal;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.traveljournal.domain.Trip;
 import com.example.traveljournal.domain.TripType;
+import com.example.traveljournal.domain.TripViewModel;
 import com.example.traveljournal.navigation.MainActivity;
 import com.example.traveljournal.networking.OnGetWeatherCallback;
 import com.example.traveljournal.networking.Weather;
@@ -25,6 +27,8 @@ import com.example.traveljournal.networking.coordinates.OnGetCoordinatesCallback
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class TripFormActivity extends AppCompatActivity {
@@ -43,11 +47,16 @@ public class TripFormActivity extends AppCompatActivity {
 
     private final WeatherService weatherService = WeatherService.getInstance();
 
+    private TripViewModel tripViewModel;
+
+    private Bundle bundle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_form);
+        tripViewModel = new ViewModelProvider(this).get(TripViewModel.class);
         initViews();
         setUpSpinner();
     }
@@ -66,13 +75,13 @@ public class TripFormActivity extends AppCompatActivity {
 
         saveButton.setOnClickListener(view -> saveTrip());
 
-        Bundle bundle = getIntent().getExtras();
+        bundle = getIntent().getExtras();
         if(bundle != null) {
             if(bundle.getBoolean("isReadOnly")) {
                 disableEditing();
-                initTripDetails((Trip) bundle.getSerializable("trip"));
-                getWeather();
             }
+            initTripDetails((Trip) bundle.getSerializable("trip"));
+            getWeather();
         }
     }
 
@@ -136,8 +145,30 @@ public class TripFormActivity extends AppCompatActivity {
     }
 
     private void saveTrip() {
+        tripViewModel.insert(getTrip());
         Intent goHomeIntent = new Intent(TripFormActivity.this, MainActivity.class);
         startActivity(goHomeIntent);
+    }
+
+    private Trip getTrip() {
+        Trip trip = (Trip) bundle.getSerializable("trip");
+        trip.setName(String.valueOf(tripName.getText()));
+        trip.setDestination(String.valueOf(destination.getText()));
+        trip.setPrice(price.getProgress());
+        trip.setRating((int) ratingBar.getRating());
+        trip.setTripType(TripType.valueOf(tripTypesSpinner.getSelectedItem().toString()));
+        trip.setStartDate(getDateFromDatePicker(startDate));
+        trip.setEndDate(getDateFromDatePicker(endDate));
+        return trip;
+    }
+
+    private Date getDateFromDatePicker(DatePicker datePicker) {
+        int   day  = datePicker.getDayOfMonth();
+        int   month= datePicker.getMonth();
+        int   year = datePicker.getYear();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        return calendar.getTime();
     }
 
     private void setUpSpinnerData() {

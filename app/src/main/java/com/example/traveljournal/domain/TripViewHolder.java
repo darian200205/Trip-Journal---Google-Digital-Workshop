@@ -28,6 +28,19 @@ public class TripViewHolder extends RecyclerView.ViewHolder{
         name = itemView.findViewById(R.id.textViewTripName);
         destination = itemView.findViewById(R.id.textViewTripDestination);
         ratingBar = itemView.findViewById(R.id.ratingBarTripRating);
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if(recyclerViewInterface != null) {
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION) {
+                        recyclerViewInterface.onLongItemClick(position);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

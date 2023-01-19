@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,20 +19,31 @@ import com.example.traveljournal.TripFormActivity;
 import com.example.traveljournal.domain.Trip;
 import com.example.traveljournal.domain.TripAdapter;
 import com.example.traveljournal.domain.TripType;
+import com.example.traveljournal.domain.TripViewModel;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 public class HomeFragment extends Fragment implements RecyclerViewInterface {
 
     private RecyclerView tripsRecyclerView;
     private List<Trip> tripList;
+    private TripViewModel tripViewModel;
+    private TripAdapter tripAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        tripViewModel = new ViewModelProvider(this).get(TripViewModel.class);
+        tripViewModel.getAll().observe(getViewLifecycleOwner(), new Observer<List<Trip>>() {
+            @Override
+            public void onChanged(List<Trip> trips) {
+                setUpRecyclerView();
+            }
+        });
         tripsRecyclerView = view.findViewById(R.id.recyclerViewTrips);
         setUpRecyclerView();
         return view;
@@ -38,8 +51,9 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
 
     private void initMovies() {
         tripList = new ArrayList<>();
-        tripList.add(new Trip("name1", "London", 4, "", TripType.SEA_SIDE, 80, new Date(), new Date()));
-        tripList.add(new Trip("name1", "Berlin", 4, "", TripType.SEA_SIDE, 80, new Date(), new Date()));
+        if(tripViewModel.getAll().getValue() != null) {
+            tripList.addAll(tripViewModel.getAll().getValue());
+        }
     }
 
     private void setTripsAdapter() {
@@ -54,8 +68,6 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
         initMovies();
         setTripsLayoutManager();
         setTripsAdapter();
-        tripsRecyclerView.addItemDecoration(new DividerItemDecoration(this.requireContext(),
-                DividerItemDecoration.HORIZONTAL));
     }
 
     @Override
@@ -63,12 +75,26 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
         super.onDestroyView();
     }
 
+
+
     @Override
     public void onItemClick(int position) {
         Intent goToTripDetailsIntent = new Intent(this.getContext(), TripFormActivity.class);
         Trip trip = tripList.get(position);
         Bundle bundle = new Bundle();
+        bundle.putInt("tripId", trip.getId());
         bundle.putBoolean("isReadOnly", true);
+        bundle.putSerializable("trip", trip);
+        goToTripDetailsIntent.putExtras(bundle);
+        startActivity(goToTripDetailsIntent);
+    }
+
+    @Override
+    public void onLongItemClick(int position) {
+        Intent goToTripDetailsIntent = new Intent(this.getContext(), TripFormActivity.class);
+        Trip trip = tripList.get(position);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isReadOnly", false);
         bundle.putSerializable("trip", trip);
         goToTripDetailsIntent.putExtras(bundle);
         startActivity(goToTripDetailsIntent);

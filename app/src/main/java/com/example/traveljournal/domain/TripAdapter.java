@@ -12,6 +12,7 @@ import com.example.traveljournal.navigation.ui.home.RecyclerViewInterface;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Objects;
 
 public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> {
 
@@ -36,7 +37,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> {
         holder.getName().setText(currentTrip.getName());
         holder.getDestination().setText(currentTrip.getDestination());
         holder.getRatingBar().setRating(currentTrip.getRating());
-        if(currentTrip.getImageUrl().length() > 0) {
+        if(currentTrip.getImageUrl() != null && !Objects.equals(currentTrip.getImageUrl(), "")) {
             Picasso.get().load(currentTrip.getImageUrl())
                     .placeholder(R.drawable.ic_launcher_foreground)
                     .error(R.drawable.ic_launcher_background)
