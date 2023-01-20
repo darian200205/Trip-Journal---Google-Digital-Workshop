@@ -15,22 +15,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/pickImageButton"
+        android:text="@string/uploadImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewTrip"/>
+
     <EditText
         android:id="@+id/editTextDestination"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
-        android:hint="Destination"
+        android:hint="@string/destinationHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewTrip" />
+        app:layout_constraintTop_toBottomOf="@+id/pickImageButton" />
 
     <EditText
         android:id="@+id/editTextTripName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
-        android:hint="Trip name"
+        android:hint="@string/tripNameHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDestination" />
@@ -61,7 +70,7 @@
         android:id="@+id/ratingBarTripForm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:isIndicator="true"
+        android:isIndicator="false"
         android:numStars="5"
         android:rating="3"
         android:stepSize="1"

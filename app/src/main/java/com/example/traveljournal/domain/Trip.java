@@ -59,7 +59,14 @@ public class Trip implements Serializable {
     }
 
     public Trip() {
-
+        this.name = "";
+        this.destination = "";
+        this.rating = 0;
+        this.imageUrl = "";
+        this.tripType = TripType.CITY_BREAK;
+        this.price = 0;
+        this.startDate = new Date();
+        this.endDate = new Date();
     }
 
     @NonNull

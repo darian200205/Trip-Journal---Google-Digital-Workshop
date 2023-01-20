@@ -1,5 +1,6 @@
 package com.example.traveljournal.domain;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.traveljournal.R;
 import com.example.traveljournal.navigation.ui.home.RecyclerViewInterface;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -38,10 +40,21 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> {
         holder.getDestination().setText(currentTrip.getDestination());
         holder.getRatingBar().setRating(currentTrip.getRating());
         if(currentTrip.getImageUrl() != null && !Objects.equals(currentTrip.getImageUrl(), "")) {
-            Picasso.get().load(currentTrip.getImageUrl())
+            Picasso.get().load(Uri.parse(currentTrip.getImageUrl()))
+                    .fit()
                     .placeholder(R.drawable.ic_launcher_foreground)
                     .error(R.drawable.ic_launcher_background)
-                    .into(holder.getImageView());
+                    .into(holder.getImageView(), new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
         }
     }
 

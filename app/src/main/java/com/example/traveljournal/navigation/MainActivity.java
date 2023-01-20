@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putBoolean("isReadOnly", false);
                 bundle.putSerializable("trip", new Trip());
                 Intent addTripIntent = new Intent(MainActivity.this, TripFormActivity.class);
+                addTripIntent.putExtras(bundle);
                 startActivity(addTripIntent);
             }
         });
