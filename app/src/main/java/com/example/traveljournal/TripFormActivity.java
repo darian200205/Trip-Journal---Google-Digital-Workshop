@@ -56,6 +56,7 @@ public class TripFormActivity extends AppCompatActivity {
     private Button saveButton, pickImageButton;
     private TextView weatherTemperature;
     private TextView weatherDescription;
+    private TextView priceTextView;
 
     private List<String> tripTypes;
     private Trip trip;
@@ -88,6 +89,25 @@ public class TripFormActivity extends AppCompatActivity {
         weatherTemperature = findViewById(R.id.textViewTemperature);
         weatherDescription = findViewById(R.id.textViewWeatherDescription);
         pickImageButton = findViewById(R.id.pickImageButton);
+        priceTextView = findViewById(R.id.textViewPrice);
+        price.setMax(1000);
+        price.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                priceTextView.setText(String.valueOf(i) + getResources().getString(R.string.priceCurrency));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         handleSaveImageButton();
         saveButton.setOnClickListener(view -> saveTrip());
         setUpSpinner();
@@ -244,6 +264,8 @@ public class TripFormActivity extends AppCompatActivity {
 
         return !trip.getStartDate().after(trip.getEndDate());
     }
+
+
 
     private Trip getTrip() {
         trip.setName(String.valueOf(tripName.getText()));

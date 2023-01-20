@@ -16,4 +16,5 @@
     <string name="uploadImage">Upload</string>
     <string name="destinationHint">Destination</string>
     <string name="tripNameHint">Trip name</string>
+    <string name="priceCurrency">EUR</string>
 </resources>
