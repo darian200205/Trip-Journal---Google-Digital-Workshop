@@ -16,7 +16,7 @@ import com.example.traveljournal.domain.Trip;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Trip.class}, version = 2)
+@Database(entities = {Trip.class}, version = 3)
 public abstract class TripJournalDatabase extends RoomDatabase {
 
     public static final ExecutorService databaseWriterExecutor = Executors.newFixedThreadPool(4);

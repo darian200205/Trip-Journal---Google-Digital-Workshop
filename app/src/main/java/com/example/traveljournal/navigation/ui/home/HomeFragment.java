@@ -99,4 +99,11 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
         goToTripDetailsIntent.putExtras(bundle);
         startActivity(goToTripDetailsIntent);
     }
+
+    @Override
+    public void onFavoriteButtonClick(int position, boolean isFavorite) {
+        Trip trip = tripList.get(position);
+        trip.setFavorite(isFavorite);
+        tripViewModel.insert(trip);
+    }
 }

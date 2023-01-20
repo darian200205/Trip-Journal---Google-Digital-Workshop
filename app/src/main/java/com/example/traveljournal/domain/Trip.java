@@ -47,6 +47,9 @@ public class Trip implements Serializable {
     @TypeConverters({DateConverter.class})
     private Date endDate;
 
+    @ColumnInfo(name = "isFavorite")
+    private Boolean isFavorite = Boolean.FALSE;
+
     public Trip(String name, String destination, Integer rating, String imageUrl, TripType tripType, Integer price, Date startDate, Date endDate) {
         this.name = name;
         this.destination = destination;
@@ -76,6 +79,14 @@ public class Trip implements Serializable {
 
     public void setId(@NonNull Integer id) {
         this.id = id;
+    }
+
+    public Boolean getFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        isFavorite = favorite;
     }
 
     public TripType getTripType() {

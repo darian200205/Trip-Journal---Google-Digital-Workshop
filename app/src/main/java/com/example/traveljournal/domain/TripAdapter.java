@@ -56,7 +56,20 @@ public class TripAdapter extends RecyclerView.Adapter<TripViewHolder> {
                         }
                     });
         }
+
+        if(currentTrip.getFavorite()) {
+            holder.getFavoriteTripImage().setEnabled(true);
+            holder.getAddToFavoriteButton().setVisibility(View.VISIBLE);
+            holder.getAddToFavoriteButton().setEnabled(false);
+            holder.getAddToFavoriteButton().setVisibility(View.GONE);
+        } else {
+            holder.getFavoriteTripImage().setEnabled(false);
+            holder.getFavoriteTripImage().setVisibility(View.GONE);
+            holder.getAddToFavoriteButton().setEnabled(true);
+            holder.getAddToFavoriteButton().setVisibility(View.VISIBLE);
+        }
     }
+
 
 
 
